@@ -1,0 +1,847 @@
+Perfecto. Elimino los cuatro subtítulos del Viaje del Héroe en las secciones indicadas. Los section-tag afectados son: "El Mentor", "Las Pruebas", "La Caverna más Profunda" y "El Umbral".
+Listo. Cuatro subtítulos eliminados del Viaje del Héroe:
+
+- ~~Las Pruebas~~ (sección "Es para ti si...")
+- ~~La Caverna más Profunda~~ (sección del caso clínico)
+- ~~El Mentor~~ (sección del autor)
+- ~~El Umbral~~ (sección del fragmento)
+
+El contenido de cada sección queda intacto, solo desaparecen esos labels de uso interno.
+
+Here is the edited code:
+
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>El Patrón Oculto — Andrés Morales Ángel</title>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400;1,700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet"/>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"/>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --black: #0a0a0a; --dark: #111111; --card: #161616; --border: #222222;
+      --gold: #c9a84c; --gold-light: #e8c97a; --white: #f5f0e8;
+      --gray: #888888; --gray-light: #bbbbbb; --red: #8b1a1a;
+    }
+    html { scroll-behavior: smooth; }
+    body { font-family: 'Inter', sans-serif; background-color: var(--black); color: var(--white); }
+    .overflow-guard { overflow-x: clip; }
+
+    #reading-progress {
+      position: fixed; top: 0; left: 0; width: 0%; height: 3px;
+      background: var(--gold); z-index: 9999; transition: width 0.1s linear;
+    }
+
+    .reveal {
+      opacity: 0; transform: translateY(36px);
+      transition: opacity 0.75s cubic-bezier(0.22,1,0.36,1), transform 0.75s cubic-bezier(0.22,1,0.36,1);
+    }
+    .reveal.visible { opacity: 1; transform: translateY(0); }
+    .reveal-delay-1 { transition-delay: 0.1s; }
+    .reveal-delay-2 { transition-delay: 0.22s; }
+    .reveal-delay-3 { transition-delay: 0.34s; }
+    .reveal-delay-4 { transition-delay: 0.46s; }
+    .reveal-delay-5 { transition-delay: 0.58s; }
+
+    .strip-item { position: relative; overflow: hidden; }
+    .strip-item::before {
+      content: ''; position: absolute; left: 0; top: 0; bottom: 0;
+      width: 2px; background: var(--gold);
+      transform: scaleY(0); transform-origin: bottom;
+      transition: transform 0.35s cubic-bezier(0.22,1,0.36,1);
+    }
+    .strip-item:hover::before { transform: scaleY(1); }
+
+    /* ── BOOK COVER ── */
+    #libroScene { position: relative; }
+    #bookCoverWrap {
+      width: 100%;
+      height: 100svh;
+      min-height: 500px;
+      position: relative;
+      background-image: url('https://cdn.jsdelivr.net/gh/piscomorado/elpatronoculto-assets@main/Portada.png');
+      background-size: cover;
+      background-position: center 0%;
+      background-repeat: no-repeat;
+      will-change: background-position;
+    }
+    #bookCoverWrap::after {
+      content: '';
+      position: absolute;
+      bottom: 0; left: 0; right: 0;
+      height: 45%;
+      background: linear-gradient(to bottom, transparent 0%, var(--black) 100%);
+      pointer-events: none;
+      z-index: 2;
+    }
+    #bookTextOverlay {
+      position: relative;
+      z-index: 5;
+      background: var(--black);
+      text-align: center;
+      padding: 4rem 5vw 8rem;
+      margin-top: 0;
+    }
+    #bookTextOverlay .section-tag { justify-content: center; }
+    #bookTextOverlay .book-pages { justify-content: center; }
+    #bookTextOverlay .book-quote {
+      border-left: none;
+      border-top: 1px solid rgba(201,168,76,0.4);
+      border-bottom: 1px solid rgba(201,168,76,0.4);
+      padding: 1.5rem 2rem; text-align: center;
+      max-width: 680px; margin: 0 auto 2.5rem;
+    }
+    #bookTextOverlay .book-description { max-width: 680px; margin: 0 auto 2rem; }
+
+    @media (prefers-reduced-motion: reduce) {
+      .reveal { opacity: 1; transform: none; transition: none; }
+      #reading-progress { display: none; }
+    }
+
+    /* NAV */
+    nav {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+      display: flex; justify-content: space-between; align-items: center;
+      padding: 1.5rem 5vw;
+      background: rgba(10,10,10,0.88); backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--border);
+    }
+    .nav-logo { font-family: 'Playfair Display', serif; font-size: 1.1rem; letter-spacing: 0.15em; text-transform: uppercase; color: var(--gold); }
+    .nav-links { display: flex; gap: 2.5rem; list-style: none; }
+    .nav-links a { color: var(--gray-light); text-decoration: none; font-size: 0.8rem; letter-spacing: 0.12em; text-transform: uppercase; transition: color 0.3s; }
+    .nav-links a:hover { color: var(--gold); }
+    .nav-cta { background: var(--gold); color: var(--black) !important; padding: 0.55rem 1.4rem; font-weight: 600 !important; }
+    .nav-cta:hover { background: var(--gold-light) !important; }
+    .hamburger { display: none; flex-direction: column; gap: 5px; cursor: pointer; background: none; border: none; padding: 4px; }
+    .hamburger span { display: block; width: 24px; height: 2px; background: var(--white); transition: all 0.3s; }
+    .mobile-menu { display: none; position: fixed; inset: 0; background: var(--black); z-index: 99; flex-direction: column; align-items: center; justify-content: center; gap: 2.5rem; }
+    .mobile-menu.open { display: flex; }
+    .mobile-menu a { color: var(--white); text-decoration: none; font-size: 1.2rem; letter-spacing: 0.15em; text-transform: uppercase; font-family: 'Playfair Display', serif; }
+    @media (max-width: 768px) { .nav-links { display: none; } .hamburger { display: flex; } }
+
+    /* HERO */
+    .hero { min-height: 100vh; display: flex; flex-direction: column; justify-content: flex-end; align-items: center; text-align: center; padding: 0 5vw 8vh; position: relative; overflow: hidden; }
+    .hero-bg {
+      position: absolute; inset: 0; will-change: transform;
+      background: linear-gradient(to bottom, rgba(10,10,10,0.3) 0%, rgba(10,10,10,0.7) 60%, var(--black) 100%),
+        radial-gradient(ellipse at 70% 30%, rgba(139,26,26,0.18) 0%, transparent 60%),
+        radial-gradient(ellipse at 20% 80%, rgba(201,168,76,0.08) 0%, transparent 50%);
+      background-color: #0d0a08;
+    }
+    .hero-bg::after { content: ''; position: absolute; inset: 0; background-image: repeating-linear-gradient(90deg, transparent, transparent 80px, rgba(201,168,76,0.03) 80px, rgba(201,168,76,0.03) 81px); }
+    .hero-quotes { position: relative; display: flex; flex-direction: column; gap: 0.4rem; margin-bottom: 2.5rem; max-width: 600px; }
+    .hero-quote-line { font-family: 'Playfair Display', serif; font-style: italic; font-size: clamp(0.82rem, 1.5vw, 1rem); color: var(--gray); line-height: 1.6; }
+    .hero-quote-line::before { content: '"'; color: var(--gold); }
+    .hero-quote-line::after { content: '"'; color: var(--gold); }
+    .hero-quote-div { width: 24px; height: 1px; background: var(--border); margin: 0.3rem auto; }
+    .hero-tag { position: relative; font-size: 0.7rem; letter-spacing: 0.3em; text-transform: uppercase; color: var(--gold); margin-bottom: 1.5rem; display: flex; align-items: center; justify-content: center; gap: 1rem; }
+    .hero-tag::before { content: ''; width: 40px; height: 1px; background: var(--gold); }
+    .hero-title { position: relative; font-family: 'Playfair Display', serif; font-size: clamp(3.5rem, 9vw, 9rem); font-weight: 900; line-height: 0.92; letter-spacing: -0.02em; margin-bottom: 1rem; }
+    .hero-title span { color: var(--gold); font-style: italic; }
+    .hero-subtitle { position: relative; font-family: 'Playfair Display', serif; font-size: clamp(1.2rem, 2.5vw, 2rem); font-weight: 400; font-style: italic; color: var(--gray-light); max-width: 600px; margin-bottom: 1.2rem; line-height: 1.5; }
+    .hero-hook { position: relative; font-size: 0.9rem; color: var(--gray); max-width: 540px; margin-bottom: 2.5rem; line-height: 1.7; font-style: italic; }
+    .hero-actions { position: relative; display: flex; gap: 1.2rem; flex-wrap: wrap; align-items: center; justify-content: center; }
+    .btn-primary { background: var(--gold); color: var(--black); padding: 1rem 2.4rem; font-size: 0.8rem; font-weight: 700; letter-spacing: 0.15em; text-transform: uppercase; text-decoration: none; display: inline-block; transition: background 0.3s, transform 0.2s; }
+    .btn-primary:hover { background: var(--gold-light); transform: translateY(-2px); }
+    .btn-secondary { color: var(--white); padding: 1rem 2.4rem; font-size: 0.8rem; font-weight: 500; letter-spacing: 0.15em; text-transform: uppercase; text-decoration: none; border: 1px solid var(--border); display: inline-block; transition: border-color 0.3s, color 0.3s; }
+    .btn-secondary:hover { border-color: var(--gold); color: var(--gold); }
+    .hero-scroll-line { width: 1px; height: 60px; background: linear-gradient(to bottom, var(--gold), transparent); animation: scrollDown 2s ease-in-out infinite; }
+    @keyframes scrollDown { 0%{transform:scaleY(0);transform-origin:top} 50%{transform:scaleY(1);transform-origin:top} 51%{transform-origin:bottom} 100%{transform:scaleY(0);transform-origin:bottom} }
+
+    /* MARQUEE */
+    .marquee-wrapper { overflow: hidden; border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); padding: 1.2rem 0; background: var(--dark); }
+    .marquee-track { display: flex; white-space: nowrap; animation: marquee 30s linear infinite; }
+    .marquee-item { font-family: 'Playfair Display', serif; font-style: italic; font-size: 1rem; color: var(--gray); padding: 0 2.5rem; letter-spacing: 0.05em; }
+    .marquee-dot { color: var(--gold); margin-left: 2.5rem; }
+    @keyframes marquee { from { transform: translateX(0); } to { transform: translateX(-50%); } }
+
+    /* SECTIONS */
+    section { padding: 7rem 5vw; text-align: center; }
+    .section-tag { font-size: 0.65rem; letter-spacing: 0.35em; text-transform: uppercase; color: var(--gold); margin-bottom: 1rem; display: flex; align-items: center; justify-content: center; gap: 1rem; }
+    .section-tag::before { content: ''; width: 30px; height: 1px; background: var(--gold); }
+    .section-title { font-family: 'Playfair Display', serif; font-size: clamp(2rem, 4.5vw, 4rem); font-weight: 700; line-height: 1.1; margin-bottom: 1.5rem; }
+    .section-title em { font-style: italic; color: var(--gold); }
+    .divider { width: 100%; height: 1px; background: var(--border); margin: 0; }
+
+    /* BOOK */
+    .book-pages { display: flex; gap: 2rem; margin-bottom: 2.5rem; }
+    .book-stat-num { font-family: 'Playfair Display', serif; font-size: 2.5rem; font-weight: 700; color: var(--gold); line-height: 1; }
+    .book-stat-label { font-size: 0.7rem; letter-spacing: 0.15em; text-transform: uppercase; color: var(--gray); margin-top: 0.3rem; }
+    .book-description { color: var(--gray-light); line-height: 1.8; font-size: 1rem; margin-bottom: 2rem; }
+    .book-quote { padding-left: 1.5rem; margin-bottom: 2.5rem; }
+    .book-quote p { font-family: 'Playfair Display', serif; font-style: italic; font-size: 1.1rem; color: var(--white); line-height: 1.6; }
+
+    /* MECANISMO */
+    .mecanismo-section { padding: 7rem 5vw; background: var(--dark); border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); text-align: center; }
+    .mecanismo-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 6rem; align-items: start; margin-top: 3rem; }
+    .mecanismo-text p { color: var(--gray-light); line-height: 1.9; font-size: 1rem; margin-bottom: 1.5rem; text-align: center; }
+    .mecanismo-items { display: flex; flex-direction: column; gap: 0; }
+    .mecanismo-item { display: flex; gap: 2rem; padding: 2rem 0; border-bottom: 1px solid var(--border); align-items: flex-start; text-align: left; }
+    .mecanismo-item:first-child { padding-top: 0; }
+    .mecanismo-item:last-child { border-bottom: none; }
+    .mecanismo-num { font-family: 'Playfair Display', serif; font-size: 1.8rem; font-weight: 900; color: var(--border); line-height: 1; flex-shrink: 0; width: 3rem; }
+    .mecanismo-label { font-size: 0.65rem; letter-spacing: 0.25em; text-transform: uppercase; color: var(--gold); margin-bottom: 0.4rem; }
+    .mecanismo-desc { font-size: 0.9rem; color: var(--gray-light); line-height: 1.7; }
+    @media (max-width: 700px) { .mecanismo-grid { grid-template-columns: 1fr; gap: 2rem; } }
+
+    /* ── PARA QUIÉN — image stack cards ── */
+    .paraquien-section { padding: 7rem 0; text-align: center; }
+    .paraquien-section .section-tag,
+    .paraquien-section .section-title,
+    .paraquien-section .section-sub { padding: 0 5vw; }
+    .section-sub { color: var(--gray); max-width: 680px; margin: 0 auto 3rem; line-height: 1.8; font-size: 0.95rem; }
+
+    .pq-stack { display: flex; flex-direction: column; gap: 3px; margin-top: 3rem; }
+    .pq-card { position: relative; height: 420px; overflow: hidden; }
+    .pq-card img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; transition: transform 0.6s ease; }
+    .pq-card:hover img { transform: scale(1.03); }
+    .pq-grad { position: absolute; inset: 0; z-index: 1; }
+    .pq-text {
+      position: absolute; top: 50%; transform: translateY(-50%);
+      width: 42%; z-index: 2; padding: 0 3rem;
+    }
+    .pq-num { font-size: 0.6rem; letter-spacing: 0.4em; text-transform: uppercase; color: var(--gold); margin-bottom: 1rem; display: block; }
+    .pq-title { font-family: 'Playfair Display', serif; font-size: clamp(1.2rem, 2.2vw, 1.65rem); font-weight: 700; line-height: 1.2; margin-bottom: 0.9rem; color: var(--white); }
+    .pq-desc { font-size: 0.88rem; color: var(--gray-light); line-height: 1.7; }
+    .pq-card.text-right .pq-text { right: 0; left: auto; text-align: left; }
+    .pq-card.text-right .pq-grad { background: linear-gradient(to left, rgba(10,10,10,0.93) 0%, rgba(10,10,10,0.75) 38%, rgba(10,10,10,0.15) 62%, transparent 80%); }
+    .pq-card.text-right img { object-position: left center; }
+    .pq-card.text-left .pq-text { left: 0; right: auto; text-align: left; }
+    .pq-card.text-left .pq-grad { background: linear-gradient(to right, rgba(10,10,10,0.93) 0%, rgba(10,10,10,0.75) 38%, rgba(10,10,10,0.15) 62%, transparent 80%); }
+    .pq-card.text-left img { object-position: right center; }
+    @media (max-width: 680px) {
+      .pq-card { height: auto !important; display: flex; flex-direction: column; }
+      .pq-card img { position: relative !important; inset: auto !important; width: 100%; height: 260px; flex-shrink: 0; object-fit: cover; transform: none !important; }
+      .pq-card.text-right img { object-position: left center; }
+      .pq-card.text-left img { object-position: right center; }
+      .pq-card .pq-grad { display: none !important; }
+      .pq-text { position: static !important; width: 100% !important; top: auto !important; left: auto !important; right: auto !important; transform: none !important; padding: 1.8rem 1.6rem !important; text-align: left !important; background: var(--dark); border-top: 2px solid var(--gold); }
+    }
+
+    /* CONTENT STRIP */
+    .content-strip { background: var(--dark); padding: 5rem 5vw; border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); text-align: center; }
+    .strip-grid { display: grid; grid-template-columns: repeat(6, 1fr); gap: 0; border: 1px solid var(--border); margin-top: 3rem; }
+    .strip-item { padding: 2.5rem 1.5rem; border-right: 1px solid var(--border); transition: background 0.3s; text-align: center; }
+    .strip-item:last-child { border-right: none; }
+    .strip-item:hover { background: rgba(201,168,76,0.04); }
+    .strip-number { font-family: 'Playfair Display', serif; font-size: 3rem; font-weight: 900; color: var(--border); margin-bottom: 1rem; line-height: 1; }
+    .strip-title { font-family: 'Playfair Display', serif; font-size: 1rem; font-weight: 700; margin-bottom: 0.8rem; }
+    .strip-text { font-size: 0.8rem; color: var(--gray); line-height: 1.7; }
+    @media (max-width: 900px) { .strip-grid { grid-template-columns: repeat(3, 1fr); } .strip-item:nth-child(3n) { border-right: none; } .strip-item { border-bottom: 1px solid var(--border); } }
+    @media (max-width: 480px) { .strip-grid { grid-template-columns: repeat(2, 1fr); } .strip-item:nth-child(3n) { border-right: 1px solid var(--border); } .strip-item:nth-child(2n) { border-right: none; } }
+
+    /* CAVERNA */
+    .caso-section { padding: 7rem 5vw; background: var(--dark); border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); text-align: center; }
+    .caso-inner { max-width: 700px; margin: 3rem auto 0; text-align: left; }
+    .caverna-quote { font-family: 'Playfair Display', serif; font-style: italic; font-size: 1.25rem; color: var(--white); line-height: 1.7; border-left: 2px solid var(--gold); padding: 1.5rem 2rem; background: rgba(201,168,76,0.04); margin-bottom: 2rem; display: block; }
+    .caverna-body p { color: var(--gray-light); line-height: 1.9; font-size: 0.95rem; margin-bottom: 1.2rem; }
+
+    /* ABOUT */
+    .about-section { display: grid; grid-template-columns: 1.2fr 1fr; gap: 6rem; align-items: center; padding: 7rem 5vw; }
+    .about-text p { color: var(--gray-light); line-height: 1.9; margin-bottom: 1.5rem; font-size: 1rem; text-align: left; }
+    .about-text .section-tag { justify-content: flex-start; }
+    .about-credentials { display: flex; flex-direction: column; gap: 1rem; margin-top: 2.5rem; }
+    .credential { display: flex; align-items: flex-start; gap: 1rem; }
+    .credential-icon { width: 2px; height: 1.2rem; background: var(--gold); flex-shrink: 0; margin-top: 0.2rem; }
+    .credential-text { font-size: 0.85rem; color: var(--gray-light); line-height: 1.5; }
+    .about-portrait { position: relative; aspect-ratio: 3/4; overflow: hidden; box-shadow: 0 0 60px rgba(0,0,0,0.8), 0 0 120px rgba(0,0,0,0.5); }
+    .about-portrait img { width: 100%; height: 100%; object-fit: cover; object-position: center top; display: block; filter: grayscale(100%) contrast(1.05); }
+    .about-portrait::after { content: ''; position: absolute; inset: 0; border: 1px solid var(--border); pointer-events: none; }
+    .about-portrait-tag { position: absolute; bottom: 2rem; left: 2rem; right: 2rem; background: rgba(10,10,10,0.9); border: 1px solid var(--border); padding: 1rem 1.2rem; }
+    .about-portrait-tag-name { font-family: 'Playfair Display', serif; font-size: 1rem; font-weight: 700; }
+    .about-portrait-tag-title { font-size: 0.7rem; letter-spacing: 0.1em; color: var(--gold); margin-top: 0.2rem; text-transform: uppercase; }
+    @media (max-width: 700px) { .about-section { grid-template-columns: 1fr; gap: 2.5rem; } }
+
+    /* FRAGMENT */
+    .fragment-section { background: var(--dark); padding: 7rem 5vw; border-top: 1px solid var(--border); }
+    .fragment-inner { max-width: 800px; margin: 0 auto; text-align: center; }
+    .fragment-quote-mark { font-family: 'Playfair Display', serif; font-size: 8rem; line-height: 0.6; color: var(--gold); opacity: 0.3; margin-bottom: 1rem; }
+    .fragment-text { font-family: 'Playfair Display', serif; font-size: clamp(1.2rem, 2.5vw, 1.8rem); font-style: italic; line-height: 1.7; color: var(--white); margin-bottom: 2rem; text-align: left; position: relative; }
+    .fragment-text p + p { margin-top: 1.4rem; }
+    .fragment-text em { color: var(--gold); }
+    .fragment-fade { position: relative; }
+    .fragment-fade::after { content: ''; position: absolute; bottom: 0; left: 0; right: 0; height: 120px; background: linear-gradient(to top, var(--dark) 0%, transparent 100%); pointer-events: none; }
+    .fragment-source { font-size: 0.75rem; letter-spacing: 0.2em; text-transform: uppercase; color: var(--gold); }
+
+    /* QUIZ */
+    .quiz-section { text-align: center; padding: 8rem 5vw; position: relative; overflow: hidden; }
+    .quiz-section::before { content: ''; position: absolute; inset: 0; background: radial-gradient(ellipse at 50% 50%, rgba(201,168,76,0.06) 0%, transparent 70%), radial-gradient(ellipse at 80% 20%, rgba(139,26,26,0.1) 0%, transparent 50%); }
+    .quiz-eyebrow { font-size: 0.65rem; letter-spacing: 0.4em; text-transform: uppercase; color: var(--gold); margin-bottom: 1.5rem; position: relative; }
+    .quiz-title { position: relative; font-family: 'Playfair Display', serif; font-size: clamp(2.5rem, 5vw, 4.5rem); font-weight: 900; line-height: 1.05; margin-bottom: 1.5rem; }
+    .quiz-title em { font-style: italic; color: var(--gold); }
+    .quiz-description { position: relative; font-size: 1rem; color: var(--gray-light); max-width: 560px; margin: 0 auto 3rem; line-height: 1.8; }
+    .quiz-archetypes { position: relative; display: flex; justify-content: center; gap: 1rem; flex-wrap: wrap; margin-bottom: 3rem; }
+    .archetype-tag { border: 1px solid var(--border); padding: 0.5rem 1.2rem; font-size: 0.75rem; letter-spacing: 0.1em; color: var(--gray-light); text-transform: uppercase; transition: border-color 0.3s, color 0.3s; }
+    .archetype-tag:hover { border-color: var(--gold); color: var(--gold); cursor: default; }
+
+    /* NO PROMETE */
+    .nopromete-section { padding: 7rem 5vw; text-align: center; }
+    .nopromete-inner { display: grid; grid-template-columns: 1fr 1fr; gap: 6rem; align-items: start; margin-top: 3rem; text-align: left; }
+    .nopromete-list { display: flex; flex-direction: column; gap: 0; }
+    .nopromete-item { display: flex; gap: 1.5rem; padding: 1.5rem 0; border-bottom: 1px solid var(--border); align-items: flex-start; }
+    .nopromete-item:first-child { padding-top: 0; }
+    .nopromete-x { font-family: 'Playfair Display', serif; font-size: 1rem; color: var(--red); flex-shrink: 0; margin-top: 0.1rem; }
+    .nopromete-text { font-size: 0.9rem; color: var(--gray); line-height: 1.7; }
+    .nopromete-promise { background: rgba(201,168,76,0.06); border: 1px solid rgba(201,168,76,0.2); padding: 3rem; text-align: center; margin-top: 0; }
+    .nopromete-promise-label { font-size: 0.65rem; letter-spacing: 0.3em; text-transform: uppercase; color: var(--gold); margin-bottom: 1.5rem; }
+    .nopromete-promise p { font-family: 'Playfair Display', serif; font-size: 1.15rem; font-style: italic; color: var(--white); line-height: 1.7; }
+    @media (max-width: 700px) { .nopromete-inner { grid-template-columns: 1fr; gap: 2rem; } }
+
+    /* TESTIMONIALS */
+    .testimonials-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.5rem; margin-top: 3.5rem; }
+    .testimonial-card { background: var(--card); border: 1px solid var(--border); padding: 2rem; transition: border-color 0.3s; text-align: center; }
+    .testimonial-card:hover { border-color: rgba(201,168,76,0.4); }
+    .testimonial-stars { color: var(--gold); font-size: 0.8rem; letter-spacing: 0.2em; margin-bottom: 1.2rem; }
+    .testimonial-text { font-family: 'Playfair Display', serif; font-style: italic; font-size: 0.95rem; line-height: 1.7; color: var(--gray-light); margin-bottom: 1.5rem; }
+    .testimonial-author { font-size: 0.7rem; letter-spacing: 0.15em; text-transform: uppercase; color: var(--gray); }
+    .testimonial-author strong { display: block; color: var(--white); font-size: 0.85rem; text-transform: none; letter-spacing: 0; margin-bottom: 0.2rem; font-family: 'Playfair Display', serif; font-style: normal; }
+    @media (max-width: 700px) { .testimonials-grid { grid-template-columns: 1fr; } }
+
+    /* EMAIL */
+    .email-section { padding: 7rem 5vw; background: var(--black); border-top: 1px solid var(--border); }
+    .email-inner { max-width: 600px; margin: 0 auto; text-align: center; }
+    .email-form { display: flex; gap: 0; margin-top: 2.5rem; flex-wrap: wrap; }
+    .email-name-input { flex: 1; min-width: 130px; background: var(--dark); border: 1px solid var(--border); border-right: none; color: var(--white); padding: 1rem 1.5rem; font-family: 'Inter', sans-serif; font-size: 0.9rem; outline: none; transition: border-color 0.3s; }
+    .email-input { flex: 2; min-width: 160px; background: var(--dark); border: 1px solid var(--border); border-right: none; color: var(--white); padding: 1rem 1.5rem; font-family: 'Inter', sans-serif; font-size: 0.9rem; outline: none; transition: border-color 0.3s; }
+    .email-name-input::placeholder, .email-input::placeholder { color: var(--gray); }
+    .email-name-input:focus, .email-input:focus { border-color: var(--gold); }
+    .email-btn { background: var(--gold); color: var(--black); border: none; padding: 1rem 2rem; font-family: 'Inter', sans-serif; font-size: 0.75rem; font-weight: 700; letter-spacing: 0.15em; text-transform: uppercase; cursor: pointer; transition: background 0.3s; white-space: nowrap; }
+    .email-btn:hover { background: var(--gold-light); }
+    .email-note { font-size: 0.72rem; color: var(--gray); margin-top: 1rem; line-height: 1.5; }
+    @media (max-width: 560px) { .email-form { flex-direction: column; } .email-name-input, .email-input { border-right: 1px solid var(--border); border-bottom: none; min-width: 100%; } .email-btn { width: 100%; padding: 1.1rem; } }
+
+    /* FOOTER */
+    footer { padding: 4rem 5vw 2rem; border-top: 1px solid var(--border); text-align: center; }
+    .footer-top { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 4rem; gap: 3rem; flex-wrap: wrap; }
+    .footer-brand { max-width: 320px; }
+    .footer-logo { font-family: 'Playfair Display', serif; font-size: 1.4rem; font-weight: 900; color: var(--gold); margin-bottom: 1rem; }
+    .footer-tagline { font-size: 0.85rem; color: var(--gray); line-height: 1.7; }
+    .footer-links { display: flex; flex-direction: column; gap: 0.6rem; }
+    .footer-links a { color: var(--gray); text-decoration: none; font-size: 0.8rem; letter-spacing: 0.08em; transition: color 0.3s; }
+    .footer-links a:hover { color: var(--gold); }
+    .footer-bottom { display: flex; justify-content: space-between; padding-top: 2rem; border-top: 1px solid var(--border); font-size: 0.72rem; color: var(--gray); flex-wrap: wrap; gap: 0.5rem; }
+  </style>
+</head>
+<body>
+
+<div id="reading-progress"></div>
+
+<!-- NAV -->
+<nav>
+  <div class="nav-logo">El Patrón Oculto</div>
+  <ul class="nav-links">
+    <li><a href="#libro">El Libro</a></li>
+    <li><a href="#autor">El Autor</a></li>
+    <li><a href="#fragmento">Fragmento</a></li>
+    <li><a href="#quiz" class="nav-cta">Conoce tu patrón vincular</a></li>
+  </ul>
+  <button class="hamburger" id="hamburger" aria-label="Menú">
+    <span></span><span></span><span></span>
+  </button>
+</nav>
+
+<div class="mobile-menu" id="mobileMenu">
+  <a href="#libro" onclick="closeMobileMenu()">El Libro</a>
+  <a href="#autor" onclick="closeMobileMenu()">El Autor</a>
+  <a href="#fragmento" onclick="closeMobileMenu()">Fragmento</a>
+  <a href="#quiz" onclick="closeMobileMenu()" style="color:var(--gold);">Conoce tu patrón vincular</a>
+</div>
+
+<!-- HERO -->
+<section class="hero" style="padding-top:80px;">
+  <div class="hero-bg" id="heroBg"></div>
+  <div class="hero-quotes reveal">
+    <p class="hero-quote-line">porque sigo eligiendo la misma persona con diferente nombre</p>
+    <div class="hero-quote-div"></div>
+    <p class="hero-quote-line">siento que me abandonaron, pero en realidad fui yo quien me fui apagando</p>
+    <div class="hero-quote-div"></div>
+    <p class="hero-quote-line">esperé que cambiara pero nunca lo hizo y me cansé</p>
+    <div class="hero-quote-div"></div>
+    <p class="hero-quote-line">me va muy bien en todo, menos en mis relaciones</p>
+  </div>
+  <h1 class="hero-title reveal reveal-delay-1">El <span>Patrón</span><br/>Oculto</h1>
+  <p class="hero-hook reveal reveal-delay-2">
+    ¿Sientes que estás fracasando en tus relaciones y no sabes por dónde empezar a arreglarlo?<br/>
+    Pues la respuesta no está en la otra persona.<br/>
+    Lo que todavía no sabes es que eso es un patrón, una programación que instalaste cuando eras niño y ahora sabotea tus relaciones.
+  </p>
+  <div class="hero-actions reveal reveal-delay-3">
+    <a href="#quiz" class="btn-primary">Conoce tu patrón vincular</a>
+  </div>
+</section>
+
+<!-- MARQUEE -->
+<div class="marquee-wrapper">
+  <div class="marquee-track" id="marqueeTrack">
+    <span class="marquee-item">El Cuidador <span class="marquee-dot">·</span></span>
+    <span class="marquee-item">El Armonizador <span class="marquee-dot">·</span></span>
+    <span class="marquee-item">El Arquitecto <span class="marquee-dot">·</span></span>
+    <span class="marquee-item">El Ejecutor <span class="marquee-dot">·</span></span>
+    <span class="marquee-item">El Orador <span class="marquee-dot">·</span></span>
+    <span class="marquee-item">El Nómada <span class="marquee-dot">·</span></span>
+    <span class="marquee-item">El Patrón Oculto <span class="marquee-dot">·</span></span>
+    <span class="marquee-item">El Cuidador <span class="marquee-dot">·</span></span>
+    <span class="marquee-item">El Armonizador <span class="marquee-dot">·</span></span>
+    <span class="marquee-item">El Arquitecto <span class="marquee-dot">·</span></span>
+    <span class="marquee-item">El Ejecutor <span class="marquee-dot">·</span></span>
+    <span class="marquee-item">El Orador <span class="marquee-dot">·</span></span>
+    <span class="marquee-item">El Nómada <span class="marquee-dot">·</span></span>
+    <span class="marquee-item">El Patrón Oculto <span class="marquee-dot">·</span></span>
+  </div>
+</div>
+
+<!-- LIBRO / LA LLAMADA -->
+<div id="libro">
+  <div id="bookCoverWrap" role="img" aria-label="Portada de El Patrón Oculto"></div>
+  <div id="bookTextOverlay">
+    <div class="section-tag reveal">El Libro</div>
+    <h2 class="section-title reveal reveal-delay-1" style="font-size:clamp(2.2rem,5vw,4.5rem);">
+      Detrás de cada<br/><em>vínculo roto</em><br/>hay un patrón
+    </h2>
+    <div class="book-quote reveal reveal-delay-2">
+      <p>¿Sientes que estás fracasando en tus relaciones y no sabes por dónde empezar a arreglarlo? Pues la respuesta no está en la otra persona. Lo que todavía no sabes es que eso es un patrón, una programación que instalaste cuando eras niño y ahora sabotea tus relaciones.</p>
+    </div>
+    <div class="book-pages reveal reveal-delay-3">
+      <div>
+        <div class="book-stat-num" data-target="380">0</div>
+        <div class="book-stat-label">Páginas</div>
+      </div>
+      <div>
+        <div class="book-stat-num" data-target="6">0</div>
+        <div class="book-stat-label">Arquetipos</div>
+      </div>
+      <div>
+        <div class="book-stat-num" data-target="3">0</div>
+        <div class="book-stat-label">Vínculos</div>
+      </div>
+    </div>
+    <p style="font-size:0.8rem;color:var(--gray);margin-bottom:2rem;" class="reveal reveal-delay-3">
+      Disponible en versión digital (Kindle) y edición impresa (Tapa blanda)
+    </p>
+    <div class="reveal reveal-delay-4">
+      <a href="https://www.amazon.com/dp/B0HJJGF293/" target="_blank" class="btn-primary">Conseguir el libro en Amazon</a>
+    </div>
+  </div>
+</div>
+
+<!-- MECANISMO / EL RECHAZO -->
+<section class="mecanismo-section" id="mecanismo">
+  <div class="section-tag reveal">El Mecanismo</div>
+  <h2 class="section-title reveal reveal-delay-1">Cómo se instala<br/><em>la programación</em></h2>
+  <div class="mecanismo-grid">
+    <div class="mecanismo-items reveal">
+      <div class="mecanismo-item">
+        <div class="mecanismo-num">01</div>
+        <div>
+          <div class="mecanismo-label">El primer vínculo</div>
+          <p class="mecanismo-desc">Antes de que pudieras entender el mundo, aprendiste cómo funciona el amor. Lo aprendiste de las personas que te cuidaron. Y ese aprendizaje quedó grabado.</p>
+        </div>
+      </div>
+      <div class="mecanismo-item">
+        <div class="mecanismo-num">02</div>
+        <div>
+          <div class="mecanismo-label">La respuesta adaptativa</div>
+          <p class="mecanismo-desc">El Yo aprende a sobrevivir. Aprende a conectar, a protegerse, a conseguir amor de la única forma que conoce: adaptándose a lo que el entorno le dio.</p>
+        </div>
+      </div>
+      <div class="mecanismo-item">
+        <div class="mecanismo-num">03</div>
+        <div>
+          <div class="mecanismo-label">El arquetipo vincular</div>
+          <p class="mecanismo-desc">Esa adaptación toma una forma concreta. Un arquetipo: una manera de relacionarse, de amar, de alejarse o de necesitar. Siempre el mismo. Siempre tuyo.</p>
+        </div>
+      </div>
+      <div class="mecanismo-item">
+        <div class="mecanismo-num">04</div>
+        <div>
+          <div class="mecanismo-label">El patrón en el adulto</div>
+          <p class="mecanismo-desc">No fracasas en el amor. Repites la única forma de amar que aprendiste. Cambian las personas, los contextos, los años. El patrón es el mismo.</p>
+        </div>
+      </div>
+    </div>
+    <div class="mecanismo-text reveal reveal-delay-2">
+      <p>Ya fuiste a terapia. Ya leíste libros. Ya te prometiste que esta vez ibas a hacer las cosas diferente. Y algo, en algún punto, volvió a fallar.</p>
+      <p>No es porque estés roto o dañado. Sino porque nadie te supo mostrar cuál era el origen de esa programación.</p>
+      <p>Este libro lo hace.</p>
+    </div>
+  </div>
+</section>
+
+<!-- PARA QUIÉN / LAS PRUEBAS -->
+<section class="paraquien-section" id="paraquien">
+  <h2 class="section-title reveal reveal-delay-1">No es para todos.<br/><em>Es para ti si...</em></h2>
+  <p class="section-sub reveal reveal-delay-2">
+    Seis arquetipos. Seis formas distintas de aprender a vincularse cuando el amor en los primeros años no se expresó como debía. El que lo da todo esperando recibir lo mismo. El que se va antes de que lo dejen. El que se siente demasiado diferente para ser amado tal cual es. El que lo consigue todo menos una relación que funcione. Uno de ellos eres tú.
+  </p>
+</section>
+
+<div class="pq-stack">
+
+  <!-- 01 — texto derecha, imagen izquierda -->
+  <div class="pq-card text-right reveal">
+    <img src="https://cdn.abacus.ai/images/f5106321-338a-400a-8ae3-77cd6df703c7.png" alt="Figuras femeninas encadenadas, patrones repetidos en vínculos" loading="lazy"/>
+    <div class="pq-grad"></div>
+    <div class="pq-text">
+      <span class="pq-num">01 — Las pruebas</span>
+      <h3 class="pq-title">Repites los mismos patrones en tus relaciones</h3>
+      <p class="pq-desc">Cambian las personas, pero la historia tiene el mismo desenlace. Siempre el mismo guión, distintos actores, el mismo dolor al final.</p>
+    </div>
+  </div>
+
+  <!-- 02 — texto izquierda, imagen derecha -->
+  <div class="pq-card text-left reveal">
+    <img src="https://cdn.abacus.ai/images/2bfea7bb-3185-4284-a236-f5b854775a18.png" alt="Figura alcanzando el sol, esfuerzo de cambiar sin lograrlo" loading="lazy"/>
+    <div class="pq-grad"></div>
+    <div class="pq-text">
+      <span class="pq-num">02 — Las pruebas</span>
+      <h3 class="pq-title">Ya has intentado cambiar y algo te frena</h3>
+      <p class="pq-desc">Has leído, has ido a terapia, te has prometido que esta vez sería diferente. Y sin embargo, algo dentro volvió al mismo lugar.</p>
+    </div>
+  </div>
+
+  <!-- 03 — texto derecha, imagen izquierda -->
+  <div class="pq-card text-right reveal">
+    <img src="https://cdn.abacus.ai/images/8449cfb8-e228-4e8f-838a-2b290f4e8547.png" alt="Ouroboros, serpiente mordiéndose la cola, ciclo sin salida" loading="lazy"/>
+    <div class="pq-grad"></div>
+    <div class="pq-text">
+      <span class="pq-num">03 — Las pruebas</span>
+      <h3 class="pq-title">Algo no encaja en tu vida aunque todo funcione</h3>
+      <p class="pq-desc">En el trabajo, en los logros, todo parece avanzar. Pero en tus vínculos hay un vacío que no sabes cómo nombrar ni a quién contarle.</p>
+    </div>
+  </div>
+
+  <!-- 04 — texto derecha, imagen izquierda -->
+  <div class="pq-card text-right reveal">
+    <img src="https://cdn.abacus.ai/images/b8649811-4b0f-4855-8ab4-7a667d838a06.png" alt="Balanza con libros y pirámide dorada, el peso del conocimiento" loading="lazy"/>
+    <div class="pq-grad"></div>
+    <div class="pq-text">
+      <span class="pq-num">04 — Las pruebas</span>
+      <h3 class="pq-title">Estás cansado de la autoayuda sin sustento</h3>
+      <p class="pq-desc">Quieres rigor. Quieres que alguien te explique el <em>por qué</em>, no solo qué hacer. La intuición y los consejos genéricos ya no te alcanzan.</p>
+    </div>
+  </div>
+
+  <!-- 05 — texto izquierda, imagen derecha -->
+  <div class="pq-card text-left reveal">
+    <img src="https://cdn.abacus.ai/images/6449a463-176e-4a6e-8ba9-688f68f55572.png" alt="Figura con red neuronal interior iluminada, trabajo interno con vínculos" loading="lazy"/>
+    <div class="pq-grad"></div>
+    <div class="pq-text">
+      <span class="pq-num">05 — Las pruebas</span>
+      <h3 class="pq-title">Trabajas con personas y quieres entenderlas mejor</h3>
+      <p class="pq-desc">Eres psicólogo, terapeuta, coach o simplemente alguien que acompaña a otros. Entender el patrón vincular cambia la manera de ver a quien tienes enfrente.</p>
+    </div>
+  </div>
+
+</div>
+
+<!-- CONTENT STRIP — LOS 6 ARQUETIPOS -->
+<div class="content-strip" id="arquetipos">
+  <div class="section-tag reveal" style="margin-bottom:2rem;">Los 6 Arquetipos Vinculares</div>
+  <h2 class="section-title reveal reveal-delay-1">Los seis arquetipos<br/>del <em>vínculo</em></h2>
+  <div class="strip-grid reveal reveal-delay-2">
+    <div class="strip-item">
+      <div class="strip-number">01</div>
+      <div class="strip-title">El Cuidador</div>
+      <p class="strip-text">El que sostiene para no ser abandonado. Aprendió que el amor se gana cuidando al otro antes de cuidarse a sí mismo.</p>
+    </div>
+    <div class="strip-item">
+      <div class="strip-number">02</div>
+      <div class="strip-title">El Armonizador</div>
+      <p class="strip-text">El que mantiene la paz para no perder su lugar. Anticipar y suavizar el conflicto se convirtió en su manera de sobrevivir.</p>
+    </div>
+    <div class="strip-item">
+      <div class="strip-number">03</div>
+      <div class="strip-title">El Arquitecto</div>
+      <p class="strip-text">El que construye el mundo para no depender de él. El control y la estructura son su manera de sentirse a salvo.</p>
+    </div>
+    <div class="strip-item">
+      <div class="strip-number">04</div>
+      <div class="strip-title">El Ejecutor</div>
+      <p class="strip-text">El que conquista el mundo para no quedar a merced de él. Avanzar sin parar es su forma de mantener el miedo a raya.</p>
+    </div>
+    <div class="strip-item">
+      <div class="strip-number">05</div>
+      <div class="strip-title">El Orador</div>
+      <p class="strip-text">El que habla para que el mundo lo elija. Construyó en el lenguaje el territorio que el grupo nunca le dio.</p>
+    </div>
+    <div class="strip-item">
+      <div class="strip-number">06</div>
+      <div class="strip-title">El Nómada</div>
+      <p class="strip-text">El que se fue antes de que lo rechazaran. Aprendió que irse primero duele menos que esperar a que te dejen.</p>
+    </div>
+  </div>
+</div>
+
+<!-- CAVERNA / LA CAVERNA MÁS PROFUNDA -->
+<section class="caso-section" id="caverna">
+  <h2 class="section-title reveal reveal-delay-1">Cuando tocas fondo<br/>y descubres <em>el origen</em></h2>
+  <div class="caso-inner reveal reveal-delay-2">
+    <blockquote class="caverna-quote">
+      "Llevaba años sintiéndose incapaz de mantener una relación estable. No entendía por qué siempre terminaba solo, si era él quien se marchaba."
+    </blockquote>
+    <div class="caverna-body">
+      <p>En consulta, después de meses de trabajo, llegó un momento en que todo encajó. No era que las personas que elegía fueran las equivocadas. Era que él repetía, sin saberlo, el único modelo de vínculo que había aprendido: alejarse antes de que el otro lo hiciera.</p>
+      <p>Lo había aprendido a los siete años, cuando la manera de no sufrir fue aprender a no necesitar. Su programación no era un defecto de carácter. Era una respuesta adaptativa que en su momento lo protegió, y que ahora saboteaba cada relación que construía.</p>
+      <p>Verlo no lo curó de inmediato. Pero cambió algo fundamental: por primera vez, entendió por qué. Y eso fue el principio de una transformación real.</p>
+    </div>
+  </div>
+</section>
+
+<!-- AUTOR / EL MENTOR -->
+<section class="about-section" id="autor">
+  <div class="about-text">
+    <h2 class="section-title reveal reveal-delay-1" style="text-align:left;">Andrés<br/><em>Morales Ángel</em></h2>
+    <div class="about-credentials reveal reveal-delay-2">
+      <div class="credential">
+        <div class="credential-icon"></div>
+        <p class="credential-text">Psicólogo Clínico Forense</p>
+      </div>
+      <div class="credential">
+        <div class="credential-icon"></div>
+        <p class="credential-text">Más de una década trabajando con personas que, a pesar de sus logros, no logran construir vínculos que funcionen</p>
+      </div>
+    </div>
+    <p style="color:var(--gray-light);line-height:1.9;font-size:1rem;margin-top:2rem;" class="reveal reveal-delay-3">
+      Lo que encontré, una y otra vez en consulta, fue siempre lo mismo: un patrón. Cambiaban los nombres, los contextos, los años de vida. El patrón era el mismo.
+    </p>
+    <p style="color:var(--gray-light);line-height:1.9;font-size:1rem;" class="reveal reveal-delay-3">
+      Este libro es el resultado de ese trabajo clínico. No es autoayuda. Es psicología aplicada a las relaciones reales, escrita para que cualquier persona pueda reconocer su programación y, por primera vez, entender de dónde viene.
+    </p>
+  </div>
+  <div class="about-portrait reveal reveal-delay-2">
+    <img src="https://cdn.jsdelivr.net/gh/piscomorado/elpatronoculto-assets@main/foto%20autor.jpg" alt="Andrés Morales Ángel, Psicólogo Clínico Forense"/>
+    <div class="about-portrait-tag">
+      <div class="about-portrait-tag-name">Andrés Morales Ángel</div>
+      <div class="about-portrait-tag-title">Psicólogo Clínico Forense</div>
+    </div>
+  </div>
+</section>
+
+<!-- FRAGMENTO / EL UMBRAL -->
+<section class="fragment-section" id="fragmento">
+  <h2 class="section-title reveal reveal-delay-1">Un fragmento<br/><em>del libro</em></h2>
+  <div class="fragment-inner reveal reveal-delay-2">
+    <div class="fragment-quote-mark">"</div>
+    <p class="fragment-source" style="margin-bottom:2rem;">Capítulo II — La Programación</p>
+    <div class="fragment-fade">
+      <div class="fragment-text">
+        <p>No elegiste el miedo. Lo aprendiste. Lo aprendiste antes de tener palabras para nombrarlo, antes de que pudieras decidir si querías guardarlo o no.</p>
+        <p>Cuando alguien actúa de una manera que te resulta incomprensible en una relación, no lo hace porque sea malo o porque no te quiera. Lo hace porque <em>esa es su programación haciendo lo que aprendió a hacer.</em></p>
+        <p>Y tú haces lo mismo. Cada vez que te alejas cuando alguien se acerca demasiado. Cada vez que te quedas aunque debas irte. Cada vez que cedes lo que no deberías ceder.</p>
+        <p><em>Esa es tu programación haciendo lo que aprendió a hacer.</em></p>
+      </div>
+    </div>
+  </div>
+  <div style="margin-top:3.5rem;" class="reveal reveal-delay-3">
+    <a href="#treintapaginas" class="btn-primary">Recibir las primeras 30 páginas</a>
+  </div>
+</section>
+
+<!-- QUIZ / LA RECOMPENSA -->
+<section class="quiz-section" id="quiz">
+  <div class="quiz-eyebrow reveal">La Recompensa</div>
+  <h2 class="quiz-title reveal reveal-delay-1">Descubre tu<br/><em>arquetipo vincular</em></h2>
+  <p class="quiz-description reveal reveal-delay-2">
+    No se trata de cambiar quién eres. Se trata de ver, por primera vez con claridad, por qué tus relaciones fallan y cómo corregirlo.
+  </p>
+  <div class="quiz-archetypes reveal reveal-delay-2">
+    <span class="archetype-tag">El Cuidador</span>
+    <span class="archetype-tag">El Armonizador</span>
+    <span class="archetype-tag">El Arquitecto</span>
+    <span class="archetype-tag">El Ejecutor</span>
+    <span class="archetype-tag">El Orador</span>
+    <span class="archetype-tag">El Nómada</span>
+  </div>
+  <p style="position:relative;font-size:0.85rem;color:var(--gray);max-width:500px;margin:0 auto 2.5rem;line-height:1.7;" class="reveal reveal-delay-3">
+    El test identifica tu patrón vincular con base en el marco teórico del libro. El resultado llega a tu correo con una guía personalizada por arquetipo. Tiempo estimado: 8 minutos.
+  </p>
+  <div class="reveal reveal-delay-4" style="position:relative;">
+    <a href="https://tally.so" target="_blank" class="btn-primary">Conoce tu patrón vincular →</a>
+  </div>
+</section>
+
+<!-- NO PROMETE -->
+<section class="nopromete-section" id="nopromete">
+  <div class="section-tag reveal">Lo que no es este libro</div>
+  <h2 class="section-title reveal reveal-delay-1">No promete<br/><em>lo que no puede dar</em></h2>
+  <div class="nopromete-inner reveal reveal-delay-2">
+    <div class="nopromete-list">
+      <div class="nopromete-item">
+        <span class="nopromete-x">✕</span>
+        <p class="nopromete-text">No promete hacer desaparecer tus heridas de infancia en un fin de semana.</p>
+      </div>
+      <div class="nopromete-item">
+        <span class="nopromete-x">✕</span>
+        <p class="nopromete-text">No es una secuencia de afirmaciones positivas ni de técnicas de reprogramación rápida.</p>
+      </div>
+      <div class="nopromete-item">
+        <span class="nopromete-x">✕</span>
+        <p class="nopromete-text">No te dice qué pareja elegir ni si debes quedarte o irte de tu relación actual.</p>
+      </div>
+      <div class="nopromete-item">
+        <span class="nopromete-x">✕</span>
+        <p class="nopromete-text">No reemplaza el trabajo terapéutico. Es un mapa, no un terapeuta.</p>
+      </div>
+      <div class="nopromete-item">
+        <span class="nopromete-x">✕</span>
+        <p class="nopromete-text">No explica por qué la otra persona actúa como actúa. Explica por qué tú respondes como respondes.</p>
+      </div>
+    </div>
+    <div class="nopromete-promise">
+      <div class="nopromete-promise-label">Lo que sí ofrece</div>
+      <p>Un mapa. El nombre de algo que llevas años viviendo sin poder nombrarlo. Y la posibilidad de que, una vez que lo ves, puedas decidir qué hacer con ello. Eso no es poco. De hecho, para muchas personas, es exactamente lo que faltaba.</p>
+    </div>
+  </div>
+</section>
+
+<!-- TESTIMONIOS -->
+<section style="padding:7rem 5vw;background:var(--dark);border-top:1px solid var(--border);text-align:center;" id="testimonios">
+  <div class="section-tag reveal">Lectores</div>
+  <h2 class="section-title reveal reveal-delay-1">Lo que dicen<br/><em>quienes lo leyeron</em></h2>
+  <div class="testimonials-grid reveal reveal-delay-2">
+    <div class="testimonial-card">
+      <div class="testimonial-stars">★ ★ ★ ★ ★</div>
+      <p class="testimonial-text">"Por fin alguien lo explica con rigor. Entendí en 50 páginas lo que años de terapia no me habían logrado decir con claridad."</p>
+      <p class="testimonial-author"><strong>Lucía M.</strong> Bogotá, Colombia</p>
+    </div>
+    <div class="testimonial-card">
+      <div class="testimonial-stars">★ ★ ★ ★ ★</div>
+      <p class="testimonial-text">"Lo leí dos veces. La primera para entenderme. La segunda para entender a las personas con las que he estado."</p>
+      <p class="testimonial-author"><strong>Camilo R.</strong> Medellín, Colombia</p>
+    </div>
+    <div class="testimonial-card">
+      <div class="testimonial-stars">★ ★ ★ ★ ★</div>
+      <p class="testimonial-text">"No es un libro de autoayuda. Es un mapa. Y una vez que lo tienes, no puedes dejar de ver el patrón en todo."</p>
+      <p class="testimonial-author"><strong>Valentina S.</strong> Ciudad de México</p>
+    </div>
+  </div>
+</section>
+
+<!-- 30 PÁGINAS / EL REGRESO -->
+<section class="email-section" id="treintapaginas">
+  <div class="section-tag reveal" style="justify-content:center;">El Regreso</div>
+  <h2 class="section-title reveal reveal-delay-1">El libro no te dice<br/>qué <em>pareja elegir</em></h2>
+  <div class="email-inner">
+    <p style="color:var(--gray-light);line-height:1.8;font-size:1rem;max-width:560px;margin:0 auto 1rem;" class="reveal reveal-delay-2">
+      Te devuelve la capacidad de transformar tus vínculos. Para que no sigas repitiendo las mismas historias y viviendo los mismos dolores.
+    </p>
+    <p style="font-size:0.9rem;color:var(--gray);margin-bottom:0;line-height:1.7;" class="reveal reveal-delay-2">
+      Recibe las primeras 30 páginas de <em>El Patrón Oculto</em> directamente en tu correo. Sin costo.
+    </p>
+    <form class="email-form reveal reveal-delay-3" onsubmit="handleFormSubmit(event)">
+      <input class="email-name-input" type="text" placeholder="Tu nombre"/>
+      <input class="email-input" type="email" placeholder="tu@correo.com" required/>
+      <button class="email-btn" type="submit">Quiero mis 30 páginas →</button>
+    </form>
+    <p class="email-note reveal reveal-delay-4">Sin spam. Puedes darte de baja cuando quieras.</p>
+    <div id="formSuccess" style="display:none;margin-top:1.5rem;padding:1.2rem;border:1px solid rgba(201,168,76,0.4);background:rgba(201,168,76,0.06);">
+      <p style="font-size:0.9rem;color:var(--gold);font-family:'Playfair Display',serif;font-style:italic;">Listo. Revisa tu correo en los próximos minutos.</p>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-top">
+    <div class="footer-brand">
+      <div class="footer-logo">El Patrón Oculto</div>
+      <p class="footer-tagline">Un libro sobre por qué los vínculos fallan de la misma manera. Y qué hacer cuando finalmente lo ves.</p>
+    </div>
+    <div class="footer-links">
+      <a href="https://www.amazon.com/dp/B0HJJGF293/" target="_blank" style="color:var(--gold);font-weight:600;">Comprar en Amazon →</a>
+      <a href="#quiz">Test de Arquetipo Vincular</a>
+      <a href="#autor">El Autor</a>
+      <a href="#fragmento">Fragmento del libro</a>
+      <a href="#treintapaginas">30 páginas gratis</a>
+    </div>
+    <div class="footer-links">
+      <a href="#">Instagram</a>
+      <a href="#">TikTok</a>
+      <a href="#">LinkedIn</a>
+      <a href="#">Substack</a>
+      <a href="#">Comunidad Telegram</a>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <span>© 2026 Andrés Morales Ángel — elpatronoculto.com</span>
+    <span>Psicólogo Clínico Forense</span>
+  </div>
+</footer>
+
+<script>
+  var bar = document.getElementById('reading-progress');
+  window.addEventListener('scroll', function() {
+    var h = document.documentElement;
+    bar.style.width = (h.scrollTop / (h.scrollHeight - h.clientHeight) * 100) + '%';
+  }, { passive: true });
+
+  var obs = new IntersectionObserver(function(entries) {
+    entries.forEach(function(e) {
+      if (e.isIntersecting) { e.target.classList.add('visible'); obs.unobserve(e.target); }
+    });
+  }, { threshold: 0.05 });
+  document.querySelectorAll('.reveal').forEach(function(el) { obs.observe(el); });
+  function triggerVisible() {
+    document.querySelectorAll('.reveal:not(.visible)').forEach(function(el) {
+      var r = el.getBoundingClientRect();
+      if (r.top < window.innerHeight && r.bottom > 0) el.classList.add('visible');
+    });
+  }
+  triggerVisible(); setTimeout(triggerVisible, 100); setTimeout(triggerVisible, 400);
+
+  var cObs = new IntersectionObserver(function(entries) {
+    entries.forEach(function(entry) {
+      if (!entry.isIntersecting) return;
+      var el = entry.target;
+      var target = parseInt(el.getAttribute('data-target'), 10);
+      var start = null;
+      function tick(ts) {
+        if (!start) start = ts;
+        var p = Math.min((ts - start) / 1400, 1);
+        var ease = 1 - Math.pow(1 - p, 3);
+        el.textContent = Math.round(ease * target);
+        if (p < 1) requestAnimationFrame(tick);
+      }
+      requestAnimationFrame(tick);
+      cObs.unobserve(el);
+    });
+  }, { threshold: 0.5 });
+  document.querySelectorAll('[data-target]').forEach(function(el) { cObs.observe(el); });
+
+  var mt = document.getElementById('marqueeTrack');
+  if (mt) {
+    mt.parentElement.addEventListener('mouseenter', function() { mt.style.animationPlayState = 'paused'; });
+    mt.parentElement.addEventListener('mouseleave', function() { mt.style.animationPlayState = 'running'; });
+  }
+
+  var bookCover = document.getElementById('bookCoverWrap');
+  window.addEventListener('scroll', function() {
+    if (bookCover) {
+      var rect = bookCover.getBoundingClientRect();
+      if (rect.top < window.innerHeight && rect.bottom > 0) {
+        var pct = Math.max(0, Math.min(100, 50 + (rect.top / window.innerHeight - 0.5) * 30));
+        bookCover.style.backgroundPositionY = pct + '%';
+      }
+    }
+  }, { passive: true });
+
+  var hamburger = document.getElementById('hamburger');
+  var mobileMenu = document.getElementById('mobileMenu');
+  hamburger.addEventListener('click', function() {
+    mobileMenu.classList.toggle('open');
+    document.body.style.overflow = mobileMenu.classList.contains('open') ? 'hidden' : '';
+  });
+  function closeMobileMenu() {
+    mobileMenu.classList.remove('open');
+    document.body.style.overflow = '';
+  }
+
+  function handleFormSubmit(e) {
+    e.preventDefault();
+    document.getElementById('formSuccess').style.display = 'block';
+  }
+</script>
+</body>
+</html>
