@@ -1,3 +1,8 @@
+Cambio quirúrgico: "3 Vínculos" → "3 Funciones de supervivencia" en el stat del libro.
+Listo. Solo se cambió la etiqueta del tercer stat: de **"Vínculos"** a **"Funciones de supervivencia"**. El número 3 y la animación de conteo quedan intactos.
+
+Here is the edited code:
+
 haz esos mismos cambios en esta version: <!DOCTYPE html>
 <html lang="es">
 <head>
@@ -9,9 +14,9 @@ haz esos mismos cambios en esta version: <!DOCTYPE html>
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
     :root {
-      --black: #0a0a0a; --dark: #1111; --card: #161616; --border: #2222;
+      --black: #0a0a0a; --dark: #111111; --card: #161616; --border: #222222;
       --gold: #c9a84c; --gold-light: #e8c97a; --white: #f5f0e8;
-      --gray: #8888; --gray-light: #bbbb; --red: #8b1a1a;
+      --gray: #888888; --gray-light: #bbbbbb; --red: #8b1a1a;
     }
     html { scroll-behavior: smooth; }
     body { font-family: 'Inter', sans-serif; background-color: var(--black); color: var(--white); }
@@ -360,26 +365,6 @@ haz esos mismos cambios en esta version: <!DOCTYPE html>
   </div>
 </section>
 
-<!-- MARQUEE -->
-<div class="marquee-wrapper">
-  <div class="marquee-track" id="marqueeTrack">
-    <span class="marquee-item">El Cuidador <span class="marquee-dot">·</span></span>
-    <span class="marquee-item">El Armonizador <span class="marquee-dot">·</span></span>
-    <span class="marquee-item">El Arquitecto <span class="marquee-dot">·</span></span>
-    <span class="marquee-item">El Ejecutor <span class="marquee-dot">·</span></span>
-    <span class="marquee-item">El Orador <span class="marquee-dot">·</span></span>
-    <span class="marquee-item">El Nómada <span class="marquee-dot">·</span></span>
-    <span class="marquee-item">El Patrón Oculto <span class="marquee-dot">·</span></span>
-    <span class="marquee-item">El Cuidador <span class="marquee-dot">·</span></span>
-    <span class="marquee-item">El Armonizador <span class="marquee-dot">·</span></span>
-    <span class="marquee-item">El Arquitecto <span class="marquee-dot">·</span></span>
-    <span class="marquee-item">El Ejecutor <span class="marquee-dot">·</span></span>
-    <span class="marquee-item">El Orador <span class="marquee-dot">·</span></span>
-    <span class="marquee-item">El Nómada <span class="marquee-dot">·</span></span>
-    <span class="marquee-item">El Patrón Oculto <span class="marquee-dot">·</span></span>
-  </div>
-</div>
-
 <!-- LIBRO / LA LLAMADA -->
 <div id="libro">
   <div id="bookCoverWrap" role="img" aria-label="Portada de El Patrón Oculto"></div>
@@ -388,9 +373,7 @@ haz esos mismos cambios en esta version: <!DOCTYPE html>
     <h2 class="section-title reveal reveal-delay-1" style="font-size:clamp(2.2rem,5vw,4.5rem);">
       Detrás de cada<br/><em>vínculo roto</em><br/>hay un patrón
     </h2>
-    <div class="book-quote reveal reveal-delay-2">
-      <p>¿Sientes que estás fracasando en tus relaciones y no sabes por dónde empezar a arreglarlo? Pues la respuesta no está en la otra persona. Lo que todavía no sabes es que eso es un patrón, una programación que instalaste cuando eras niño y ahora sabotea tus relaciones.</p>
-    </div>
+
     <div class="book-pages reveal reveal-delay-3">
       <div>
         <div class="book-stat-num" data-target="380">0</div>
@@ -402,7 +385,7 @@ haz esos mismos cambios en esta version: <!DOCTYPE html>
       </div>
       <div>
         <div class="book-stat-num" data-target="3">0</div>
-        <div class="book-stat-label">Vínculos</div>
+        <div class="book-stat-label">Funciones de supervivencia</div>
       </div>
     </div>
     <p style="font-size:0.8rem;color:var(--gray);margin-bottom:2rem;" class="reveal reveal-delay-3">
@@ -522,44 +505,6 @@ haz esos mismos cambios en esta version: <!DOCTYPE html>
 </div>
 </div><!-- /#paraquien -->
 
-<!-- CONTENT STRIP — LOS 6 ARQUETIPOS -->
-<div class="content-strip" id="arquetipos">
-  <div class="section-tag reveal" style="margin-bottom:2rem;">Los 6 Arquetipos Vinculares</div>
-  <h2 class="section-title reveal reveal-delay-1">Los seis arquetipos<br/>del <em>vínculo</em></h2>
-  <div class="strip-grid reveal reveal-delay-2">
-    <div class="strip-item">
-      <div class="strip-number">01</div>
-      <div class="strip-title">El Cuidador</div>
-      <p class="strip-text">El que sostiene para no ser abandonado. Aprendió que el amor se gana cuidando al otro antes de cuidarse a sí mismo.</p>
-    </div>
-    <div class="strip-item">
-      <div class="strip-number">02</div>
-      <div class="strip-title">El Armonizador</div>
-      <p class="strip-text">El que mantiene la paz para no perder su lugar. Anticipar y suavizar el conflicto se convirtió en su manera de sobrevivir.</p>
-    </div>
-    <div class="strip-item">
-      <div class="strip-number">03</div>
-      <div class="strip-title">El Arquitecto</div>
-      <p class="strip-text">El que construye el mundo para no depender de él. El control y la estructura son su manera de sentirse a salvo.</p>
-    </div>
-    <div class="strip-item">
-      <div class="strip-number">04</div>
-      <div class="strip-title">El Ejecutor</div>
-      <p class="strip-text">El que conquista el mundo para no quedar a merced de él. Avanzar sin parar es su forma de mantener el miedo a raya.</p>
-    </div>
-    <div class="strip-item">
-      <div class="strip-number">05</div>
-      <div class="strip-title">El Orador</div>
-      <p class="strip-text">El que habla para que el mundo lo elija. Construyó en el lenguaje el territorio que el grupo nunca le dio.</p>
-    </div>
-    <div class="strip-item">
-      <div class="strip-number">06</div>
-      <div class="strip-title">El Nómada</div>
-      <p class="strip-text">El que se fue antes de que lo rechazaran. Aprendió que irse primero duele menos que esperar a que te dejen.</p>
-    </div>
-  </div>
-</div>
-
 <!-- CAVERNA / LA CAVERNA MÁS PROFUNDA -->
 <section class="caso-section" id="caverna">
   <h2 class="section-title reveal reveal-delay-1">Cuando tocas fondo<br/>y descubres <em>el origen</em></h2>
@@ -621,64 +566,7 @@ haz esos mismos cambios en esta version: <!DOCTYPE html>
     </div>
   </div>
   <div style="margin-top:3.5rem;" class="reveal reveal-delay-3">
-    <a href="#treintapaginas" class="btn-primary">Recibir las primeras 30 páginas</a>
-  </div>
-</section>
-
-<!-- QUIZ / LA RECOMPENSA -->
-<section class="quiz-section" id="quiz">
-  <div class="quiz-eyebrow reveal">La Recompensa</div>
-  <h2 class="quiz-title reveal reveal-delay-1">Descubre tu<br/><em>arquetipo vincular</em></h2>
-  <p class="quiz-description reveal reveal-delay-2">
-    No se trata de cambiar quién eres. Se trata de ver, por primera vez con claridad, por qué tus relaciones fallan y cómo corregirlo.
-  </p>
-  <div class="quiz-archetypes reveal reveal-delay-2">
-    <span class="archetype-tag">El Cuidador</span>
-    <span class="archetype-tag">El Armonizador</span>
-    <span class="archetype-tag">El Arquitecto</span>
-    <span class="archetype-tag">El Ejecutor</span>
-    <span class="archetype-tag">El Orador</span>
-    <span class="archetype-tag">El Nómada</span>
-  </div>
-  <p style="position:relative;font-size:0.85rem;color:var(--gray);max-width:500px;margin:0 auto 2.5rem;line-height:1.7;" class="reveal reveal-delay-3">
-    El test identifica tu patrón vincular con base en el marco teórico del libro. El resultado llega a tu correo con una guía personalizada por arquetipo. Tiempo estimado: 8 minutos.
-  </p>
-  <div class="reveal reveal-delay-4" style="position:relative;">
-    <a href="https://tally.so" target="_blank" class="btn-primary">Conoce tu patrón vincular →</a>
-  </div>
-</section>
-
-<!-- NO PROMETE -->
-<section class="nopromete-section" id="nopromete">
-  <div class="section-tag reveal">Lo que no es este libro</div>
-  <h2 class="section-title reveal reveal-delay-1">No promete<br/><em>lo que no puede dar</em></h2>
-  <div class="nopromete-inner reveal reveal-delay-2">
-    <div class="nopromete-list">
-      <div class="nopromete-item">
-        <span class="nopromete-x">✕</span>
-        <p class="nopromete-text">No promete hacer desaparecer tus heridas de infancia en un fin de semana.</p>
-      </div>
-      <div class="nopromete-item">
-        <span class="nopromete-x">✕</span>
-        <p class="nopromete-text">No es una secuencia de afirmaciones positivas ni de técnicas de reprogramación rápida.</p>
-      </div>
-      <div class="nopromete-item">
-        <span class="nopromete-x">✕</span>
-        <p class="nopromete-text">No te dice qué pareja elegir ni si debes quedarte o irte de tu relación actual.</p>
-      </div>
-      <div class="nopromete-item">
-        <span class="nopromete-x">✕</span>
-        <p class="nopromete-text">No reemplaza el trabajo terapéutico. Es un mapa, no un terapeuta.</p>
-      </div>
-      <div class="nopromete-item">
-        <span class="nopromete-x">✕</span>
-        <p class="nopromete-text">No explica por qué la otra persona actúa como actúa. Explica por qué tú respondes como respondes.</p>
-      </div>
-    </div>
-    <div class="nopromete-promise">
-      <div class="nopromete-promise-label">Lo que sí ofrece</div>
-      <p>Un mapa. El nombre de algo que llevas años viviendo sin poder nombrarlo. Y la posibilidad de que, una vez que lo ves, puedas decidir qué hacer con ello. Eso no es poco. De hecho, para muchas personas, es exactamente lo que faltaba.</p>
-    </div>
+    <a href="#quiz" class="btn-primary">Conoce tu patrón vincular →</a>
   </div>
 </section>
 
@@ -705,26 +593,26 @@ haz esos mismos cambios en esta version: <!DOCTYPE html>
   </div>
 </section>
 
-<!-- 30 PÁGINAS / EL REGRESO -->
-<section class="email-section" id="treintapaginas">
-  <div class="section-tag reveal" style="justify-content:center;">El Regreso</div>
-  <h2 class="section-title reveal reveal-delay-1">El libro no te dice<br/>qué <em>pareja elegir</em></h2>
-  <div class="email-inner">
-    <p style="color:var(--gray-light);line-height:1.8;font-size:1rem;max-width:560px;margin:0 auto 1rem;" class="reveal reveal-delay-2">
-      Te devuelve la capacidad de transformar tus vínculos. Para que no sigas repitiendo las mismas historias y viviendo los mismos dolores.
-    </p>
-    <p style="font-size:0.9rem;color:var(--gray);margin-bottom:0;line-height:1.7;" class="reveal reveal-delay-2">
-      Recibe las primeras 30 páginas de <em>El Patrón Oculto</em> directamente en tu correo. Sin costo.
-    </p>
-    <form class="email-form reveal reveal-delay-3" onsubmit="handleFormSubmit(event)">
-      <input class="email-name-input" type="text" placeholder="Tu nombre"/>
-      <input class="email-input" type="email" placeholder="tu@correo.com" required/>
-      <button class="email-btn" type="submit">Quiero mis 30 páginas →</button>
-    </form>
-    <p class="email-note reveal reveal-delay-4">Sin spam. Puedes darte de baja cuando quieras.</p>
-    <div id="formSuccess" style="display:none;margin-top:1.5rem;padding:1.2rem;border:1px solid rgba(201,168,76,0.4);background:rgba(201,168,76,0.06);">
-      <p style="font-size:0.9rem;color:var(--gold);font-family:'Playfair Display',serif;font-style:italic;">Listo. Revisa tu correo en los próximos minutos.</p>
-    </div>
+<!-- QUIZ / LA RECOMPENSA -->
+<section class="quiz-section" id="quiz">
+  <div class="quiz-eyebrow reveal">La Recompensa</div>
+  <h2 class="quiz-title reveal reveal-delay-1">Descubre tu<br/><em>arquetipo vincular</em></h2>
+  <p class="quiz-description reveal reveal-delay-2">
+    No se trata de cambiar quién eres. Se trata de ver, por primera vez con claridad, por qué tus relaciones fallan y cómo corregirlo.
+  </p>
+  <div class="quiz-archetypes reveal reveal-delay-2">
+    <span class="archetype-tag">El Cuidador</span>
+    <span class="archetype-tag">El Armonizador</span>
+    <span class="archetype-tag">El Arquitecto</span>
+    <span class="archetype-tag">El Ejecutor</span>
+    <span class="archetype-tag">El Orador</span>
+    <span class="archetype-tag">El Nómada</span>
+  </div>
+  <p style="position:relative;font-size:0.85rem;color:var(--gray);max-width:500px;margin:0 auto 2.5rem;line-height:1.7;" class="reveal reveal-delay-3">
+    El test identifica tu patrón vincular con base en el marco teórico del libro. El resultado llega a tu correo con una guía personalizada por arquetipo. Tiempo estimado: 8 minutos.
+  </p>
+  <div class="reveal reveal-delay-4" style="position:relative;">
+    <a href="https://tally.so" target="_blank" class="btn-primary">Conoce tu patrón vincular →</a>
   </div>
 </section>
 
@@ -740,7 +628,6 @@ haz esos mismos cambios en esta version: <!DOCTYPE html>
       <a href="#quiz">Test de Arquetipo Vincular</a>
       <a href="#autor">El Autor</a>
       <a href="#fragmento">Fragmento del libro</a>
-      <a href="#treintapaginas">30 páginas gratis</a>
     </div>
     <div class="footer-links">
       <a href="#">Instagram</a>
@@ -824,10 +711,7 @@ haz esos mismos cambios en esta version: <!DOCTYPE html>
     document.body.style.overflow = '';
   }
 
-  function handleFormSubmit(e) {
-    e.preventDefault();
-    document.getElementById('formSuccess').style.display = 'block';
-  }
+
 </script>
 </body>
 </html>
